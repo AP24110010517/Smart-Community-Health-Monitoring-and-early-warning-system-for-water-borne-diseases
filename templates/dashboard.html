@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if not state %}
+
+<h2 class="title">Select State</h2>
+
+<div class="state-container">
+    {% for s in states %}
+        <a href="/dashboard/{{s}}" class="state-bubble">
+            {{ s }}
+        </a>
+    {% endfor %}
+</div>
+
+{% endif %}
+
+
+{% if state %}
+
+<!-- PROJECT TITLE -->
+<h2 class="title">Smart Community Health Monitoring System</h2>
+<p class="subtitle">ML-based Early Warning for Water-Borne Diseases</p>
+
+<h3 class="state-title">📍 {{state}}</h3>
+
+<!-- GAUGE -->
+<div class="gauge-container">
+
+<div class="gauge">
+<div class="needle" style="transform: rotate({{ risk*1.8-90}}deg);"></div>
+</div>
+
+<h2 class="
+{% if risk < 30 %}low
+{% elif risk < 60 %}moderate
+{% else %}high
+{% endif %}
+">
+{{risk}}%
+</h2>
+
+<p>
+{% if risk < 30 %}
+Low Risk
+{% elif risk < 60 %}
+Moderate Risk
+{% else %}
+High Risk
+{% endif %}
+</p>
+
+<p class="accuracy">Model Accuracy: {{accuracy}}%</p>
+
+</div>
+
+
+<!-- WEATHER TITLE -->
+<h2 class="section-title">🌡️ Weather Conditions</h2>
+
+<!-- WEATHER -->
+<div class="weather">
+
+<div class="card">
+<h3>Temperature</h3>
+<p>{{temperature}} °C</p>
+</div>
+
+<div class="card">
+<h3>Humidity</h3>
+<p>{{humidity}} %</p>
+</div>
+
+</div>
+
+
+<!-- WATER TITLE -->
+<h2 class="section-title">💧 Water Quality Parameters</h2>
+
+<!-- WATER PARAMETERS -->
+<div class="water">
+
+<div class="card">
+<h3>pH</h3>
+<p>{{ph}}</p>
+</div>
+
+<div class="card">
+<h3>TDS</h3>
+<p>{{tds}}</p>
+</div>
+
+<div class="card">
+<h3>Turbidity</h3>
+<p>{{turbidity}}</p>
+</div>
+
+<div class="card">
+<h3>DO</h3>
+<p>{{do}}</p>
+</div>
+
+</div>
+
+
+<!-- DISEASE PREDICTION -->
+<div class="disease-box">
+<h2>⚠️ Possible Water-Borne Diseases</h2>
+
+<ul>
+{% for d in diseases %}
+<li>{{d}}</li>
+{% endfor %}
+</ul>
+
+</div>
+<div class="precaution-box">
+<h2>🛡️ Precautions</h2>
+
+<ul>
+{% for p in precautions %}
+<li>{{p}}</li>
+{% endfor %}
+</ul>
+
+</div>
+<a href="/download/{{state}}?risk={{risk}}&ph={{ph}}&tds={{tds}}&turbidity={{turbidity}}&do={{do}}&diseases={{diseases}}&precautions={{precautions}}" class="back">
+Download PDF Report
+</a>
+<a href="/dashboard" class="back">← Back to States</a>
+
+<a href="/logout" class="logout">Logout</a>
+
+{% endif %}
+
+{% endblock %}
