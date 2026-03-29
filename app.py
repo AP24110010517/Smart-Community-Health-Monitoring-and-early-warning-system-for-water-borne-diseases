@@ -47,10 +47,12 @@ state_to_city = {
 }
 
 # ---------- LOAD CSV FILES ----------
-ph_df = pd.read_csv("data/ph.csv")
-tds_df = pd.read_csv("data/tds.csv")
-turbidity_df = pd.read_csv("data/turbidity.csv")
-do_df = pd.read_csv("data/do.csv")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+ph_df = pd.read_csv(os.path.join(BASE_DIR, "data/ph.csv"))
+tds_df = pd.read_csv(os.path.join(BASE_DIR, "data/tds.csv"))
+turbidity_df = pd.read_csv(os.path.join(BASE_DIR, "data/turbidity.csv"))
+do_df = pd.read_csv(os.path.join(BASE_DIR, "data/do.csv"))
 
 # ---------- CLEAN STATE NAMES ----------
 ph_df["State"] = ph_df["State"].str.strip().str.lower()
@@ -117,7 +119,7 @@ def login():
         password = request.form["password"].strip()
 
         try:
-            users = pd.read_csv("data/users.csv")
+            users = pd.read_csv(os.path.join(BASE_DIR,"users.csv"))
         except Exception:
             users = pd.DataFrame(columns=["username","password"])
 
@@ -148,7 +150,7 @@ def register():
         password = request.form["password"].strip()
 
         try:
-            users = pd.read_csv("data/users.csv")
+            users = pd.read_csv(os.path.join(BASE_DIR, "users.csv"))
         except Exception:
             users = pd.DataFrame(columns=["username","password"])
 
@@ -160,7 +162,7 @@ def register():
         new_user = pd.DataFrame([[username,password]],columns=["username","password"])
         users = pd.concat([users,new_user],ignore_index=True)
 
-        users.to_csv("data/users.csv",index=False)
+        users.to_csv(os.path.join(BASE_DIR,"users.csv"),index=False)
 
         return redirect("/")
 
